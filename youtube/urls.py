@@ -3,5 +3,6 @@ from youtube import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^oauth2callback/$', views.oauth2callback, name='oauth2callback'),
+    url(r'^login/$', views.google_login, name='google_login'),
+    url(r'^callback/$', views.google_login_callback, name='google_login_callback'),
 ]
