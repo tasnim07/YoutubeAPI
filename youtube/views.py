@@ -8,7 +8,7 @@ from apiclient.discovery import build
 from oauth2client.file import Storage
 from oauth2client.client import flow_from_clientsecrets
 
-from models import GoogleAccount
+from models import GoogleAccount, YoutubeVideo
 
 from django.http import Http404
 from django.contrib.auth.models import User
@@ -53,7 +53,7 @@ def google_login_callback(request):
 
 	user.backend = 'django.contrib.auth.backends.ModelBackend'
 	login(request, user)
-	
+
 	return redirect(reverse('video-list'))
 
 @login_required
@@ -61,6 +61,7 @@ def get_youtube_videos(request):
 	"""Returns list of all the youtube videos by
 	channel id.
 	"""
+	import pdb;pdb.set_trace()
 	user = request.user
 	try:
 		google_user = GoogleAccount.objects.get(user=user)
@@ -77,6 +78,21 @@ def get_youtube_videos(request):
 		'access_token': google_user.access_token,		
 	}
 	r = requests.get(url, params=params)
+	#content = r.content
+	
+	content = r.json()
+	b = content['items']
+	for i in range(len(b)):
+		title = b[i].get('snippet').get('title')
+		description = b[i].get('snippet').get('description')
+		published_at = b[i].get('snippet').get('publishedAt')
+		channel_id = b[i].get('snippet').get('channelId')
+		video_id = b[i].get('id').get('videoId')
+		video_list = YoutubeVideo(title=title, description=description, published_at=published_at, video_id=video_id, channel_id=channel_id)
+		video_list.save()
+	#items = []
+	#for i in b:
+		#items.append(i)
 	# Store into YoutubeVideo table 
 	# datetime.datetime.strptime('2015-09-14T07:31:08.000Z', '%Y-%m-%dT%H:%M:%S.000z')
-	return HttpResponse(r.content)
+	return redirect(reverse('video-list'))

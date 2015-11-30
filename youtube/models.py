@@ -14,6 +14,9 @@ class GoogleAccount(models.Model):
 	user = models.ForeignKey(User, related_name='google_user')
 	refresh_token = models.CharField(max_length=50, null=True)
 
+	class Meta:
+		unique_together = ('user', 'access_token', 'refresh_token')
+
 	def __str__(self):
 		return self.user.email
 
@@ -23,7 +26,7 @@ class YoutubeVideo(models.Model):
 	"""
 	title = models.CharField(max_length=100)
 	description = models.TextField(null=True)
-	video_id = models.CharField(max_length=20)
+	video_id = models.CharField(max_length=20, primary_key=True)
 	# INFO: Not sure if we need to store this but could be 
 	# useful to get videos by channel id from the DB instantly.
 	channel_id = models.CharField(max_length=20)
