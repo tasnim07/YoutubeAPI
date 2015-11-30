@@ -81,8 +81,8 @@ def get_youtube_videos(request):
 	#content = r.content
 	
 	content = r.json()
-	items = content.get('items')
 	# Store into YoutubeVideo table
+	items = content.get('items')
 	for i in range(len(items)):
 		title = items[i].get('snippet').get('title')
 		description = items[i].get('snippet').get('description')
