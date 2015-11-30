@@ -81,13 +81,13 @@ def get_youtube_videos(request):
 	#content = r.content
 	
 	content = r.json()
-	b = content['items']
-	for i in range(len(b)):
-		title = b[i].get('snippet').get('title')
-		description = b[i].get('snippet').get('description')
-		published_at = b[i].get('snippet').get('publishedAt')
-		channel_id = b[i].get('snippet').get('channelId')
-		video_id = b[i].get('id').get('videoId')
+	items = content.get('items')
+	for i in range(len(items)):
+		title = items[i].get('snippet').get('title')
+		description = items[i].get('snippet').get('description')
+		published_at = items[i].get('snippet').get('publishedAt')
+		channel_id = items[i].get('snippet').get('channelId')
+		video_id = items[i].get('id').get('videoId')
 		video_list = YoutubeVideo(title=title, description=description, published_at=published_at, video_id=video_id, channel_id=channel_id)
 		video_list.save()
 	#items = []
