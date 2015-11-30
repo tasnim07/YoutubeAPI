@@ -82,6 +82,7 @@ def get_youtube_videos(request):
 	
 	content = r.json()
 	items = content.get('items')
+	# Store into YoutubeVideo table
 	for i in range(len(items)):
 		title = items[i].get('snippet').get('title')
 		description = items[i].get('snippet').get('description')
@@ -90,9 +91,6 @@ def get_youtube_videos(request):
 		video_id = items[i].get('id').get('videoId')
 		video_list = YoutubeVideo(title=title, description=description, published_at=published_at, video_id=video_id, channel_id=channel_id)
 		video_list.save()
-	#items = []
-	#for i in b:
-		#items.append(i)
-	# Store into YoutubeVideo table 
+	 
 	# datetime.datetime.strptime('2015-09-14T07:31:08.000Z', '%Y-%m-%dT%H:%M:%S.000z')
 	return redirect(reverse('video-list'))
