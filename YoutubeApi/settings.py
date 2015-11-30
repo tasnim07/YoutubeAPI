@@ -20,10 +20,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#!9yiecoil!0z8b4a9z&dqsoy%3h3g5w4anw%mv%mgp5jhd^w!'
+try:
+    from local_settings import SECRET_KEY
+except ImportError:
+    SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+try:
+    from local_settings import DEBUG
+except ImportError:
+    DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -103,3 +109,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+#LOGIN_URL = 'django.contrib.auth.views.login'
